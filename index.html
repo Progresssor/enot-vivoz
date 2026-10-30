@@ -3,8 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
-<title>Енот Вывоз</title>
+<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}
+/* Самосвал внизу: въезжает справа налево, тормозит, мотор работает */
+.go{position:relative;overflow:hidden;padding-top:clamp(40px,6vw,72px)}
+.go-head{text-align:center}
+.go-head h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;color:var(--ink)}
+.go-head h2 span{color:var(--green)}
+.go-head p{color:var(--ink-2);margin:12px auto 0;max-width:46ch}
+.road{position:relative;height:clamp(250px,36vw,470px);margin-top:12px}
+.road::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#151a14,#0b0f0a);border-top:1px solid rgba(255,255,255,.06)}
+.road::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:radial-gradient(50% 60% at 50% 100%,rgba(139,226,43,.18),transparent 70%);pointer-events:none}
+.lane{position:absolute;left:0;right:0;bottom:14%;height:5px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 46px,transparent 46px 92px);opacity:.5;z-index:1}
+.road.moving .lane{animation:lane .35s linear infinite}
+@keyframes lane{to{background-position:92px 0}}
+.truck{position:absolute;z-index:2;bottom:4%;left:50%;width:min(76vw,720px);transform:translateX(-50%)}
+.truck img{display:block;width:100%;height:auto;filter:drop-shadow(0 22px 18px rgba(0,0,0,.6))}
+.truck::after{content:"";position:absolute;left:4%;right:2%;bottom:1%;height:6%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.75),transparent);z-index:-1}
+.road.drive .truck{animation:drive 2.6s cubic-bezier(.12,.6,.25,1) both}
+.road.drive .truck img{animation:bump .22s ease-in-out 10 alternate,brake .5s 2.3s ease-out}
+.road.idle .truck img{animation:idle .12s linear infinite alternate}
+@keyframes drive{from{transform:translateX(calc(-50% + 100vw))}to{transform:translateX(-50%)}}
+@keyframes bump{to{transform:translateY(-3px) rotate(-.4deg)}}
+@keyframes brake{0%{transform:rotate(0)}40%{transform:rotate(-1.6deg) translateY(2px)}100%{transform:rotate(0)}}
+@keyframes idle{to{transform:translateY(-1px)}}
+.speed{position:absolute;right:-30%;top:30%;width:30%;height:40%;opacity:0;pointer-events:none}
+.speed i{position:absolute;right:0;height:3px;border-radius:3px;background:linear-gradient(90deg,rgba(139,226,43,.7),transparent)}
+.speed i:nth-child(1){top:0;width:90%}.speed i:nth-child(2){top:30%;width:60%}.speed i:nth-child(3){top:60%;width:80%}.speed i:nth-child(4){top:90%;width:50%}
+.road.drive .speed{animation:speed 2.4s ease-out both}
+@keyframes speed{0%,60%{opacity:1}100%{opacity:0}}
+.dust{position:absolute;left:62%;right:-4%;bottom:0;height:20%;pointer-events:none}
+.dust i{position:absolute;bottom:0;width:24%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(190,170,130,.55),transparent);opacity:0}
+.dust i:nth-child(1){left:0}.dust i:nth-child(2){left:18%}.dust i:nth-child(3){left:36%}.dust i:nth-child(4){left:54%}.dust i:nth-child(5){left:72%}.dust i:nth-child(6){left:88%}
+.road.drive .dust i{animation:puff 1s ease-out infinite}
+.road.drive .dust i:nth-child(2n){animation-delay:.3s}.road.drive .dust i:nth-child(3n){animation-delay:.6s}
+.road.idle .dust i:nth-child(6){animation:puff 1.6s ease-out infinite}
+@keyframes puff{0%{opacity:.9;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(60%,-70%) scale(1.8)}}
+@media (max-width:620px){.truck{width:94vw}.road{height:300px}}
+@media (prefers-reduced-motion:reduce){.road .truck,.road .truck img,.road .lane,.road .dust i,.road .speed{animation:none!important}}
+</style>
+<title>Енот Увезет</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Вывоз строительного мусора в Москве и Московской области. Контейнеры 8, 20 и 27 м³. Цену называем до выезда и не меняем на месте.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,7 +294,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
 <header class="nav">
   <div class="wrap">
-    <a class="logo" href="#top"><img src="enot.webp" alt=""><span>Енот <b>Вывоз</b></span></a>
+    <a class="logo" href="#top"><img src="enot.webp" alt=""><span>Енот <b>Увезет</b></span></a>
     <nav class="menu" aria-label="Разделы">
       <a href="#containers">Контейнеры</a><a href="#order">Заявка</a><a href="#contacts">Контакты</a>
     </nav>
@@ -277,7 +314,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         </div>
         <div class="trust"><span><i></i>8, 20 и 27 м³</span><span><i></i>Цена фиксирована</span><span><i></i>Подача в оговорённое время</span></div>
       </div>
-      <div class="mascot"><img src="enot3d.webp" alt="Енот Вывоз в кепке, очках и сигнальном жилете показывает большой палец" width="829" height="1417"></div>
+      <div class="mascot"><img src="enot3d.webp" alt="Енот Увезет в кепке, очках и сигнальном жилете показывает большой палец" width="829" height="1417"></div>
     </div>
   </section>
 
@@ -418,8 +455,23 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   </section>
 </main>
 
+<section class="go" id="go" aria-labelledby="goTitle">
+  <div class="wrap go-head">
+    <h2 id="goTitle">Енот уже <span>выезжает</span></h2>
+    <p>Позвоните, и самосвал с контейнером отправится к вашему объекту.</p>
+  </div>
+  <div class="road" id="road">
+    <div class="lane" aria-hidden="true"></div>
+    <div class="truck" id="truck">
+      <div class="speed" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <img src="truck.webp" alt="Зелёный самосвал «Сервис Енот Увезет» с енотом за рулём" width="1200" height="764" loading="lazy">
+      <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="wrap"><span>Енот Вывоз · вывоз строительного мусора · Москва и Московская область</span><span>8 967 155-03-03</span></div>
+  <div class="wrap"><span>Енот Увезет · вывоз строительного мусора · Москва и Московская область</span><span>8 967 155-03-03</span></div>
 </footer>
 
 <div class="dock">
@@ -524,6 +576,22 @@ var YANDEX_MAPS_KEY='3998c4f2-1870-4abf-b340-9ffd897276f9'; /* вставьте 
   document.getElementById('findBtn').addEventListener('click',find);
   addr.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();find()}});
   addr.addEventListener('input',function(e){if(e.isTrusted&&window.geoPt){window.geoPt=null;if(mark&&map){map.geoObjects.remove(mark);mark=null}}});
+})();
+
+/* ---------- Самосвал выезжает ---------- */
+(function(){
+  var road=document.getElementById('road');if(!road||!('IntersectionObserver' in window))return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var busy=false;
+  function go(){
+    if(busy)return;busy=true;
+    road.classList.remove('idle','drive');void road.offsetWidth;
+    road.classList.add('drive','moving');
+    setTimeout(function(){road.classList.remove('moving')},2300);
+    setTimeout(function(){road.classList.remove('drive');road.classList.add('idle');busy=false},2700);
+  }
+  new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>.35)go()})},{threshold:[.35]}).observe(road);
+  document.getElementById('truck').addEventListener('click',go);
 })();
 </script>
 

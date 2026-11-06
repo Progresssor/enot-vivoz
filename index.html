@@ -240,7 +240,10 @@ input[type=text]:focus{outline:none;border-color:var(--green)}
 
 /* Финал */
 .final .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:center}
-.phone{display:block;margin-top:22px;font:800 clamp(36px,5.6vw,64px)/1 var(--display);letter-spacing:-.03em;color:var(--mint);text-decoration:none;font-variant-numeric:tabular-nums}
+.final .sec-head .call-lead{margin-top:22px!important;font:700 clamp(22px,2.6vw,30px)/1 var(--display);color:var(--ink)!important}
+.final .sec-head .punch{margin-top:14px!important;font:800 clamp(28px,4vw,46px)/1.1 var(--display);color:var(--ink)!important;letter-spacing:-.02em}
+.final .sec-head .punch b{display:inline-block;margin-left:.15em;font:400 1.12em/1 "Pangolin","Golos Text",cursive;text-transform:uppercase;color:#FFD21F;-webkit-text-stroke:1.6px #FFD21F;transform:skewX(-10deg) rotate(-3deg)}
+.phone{display:block;margin-top:10px;font:800 clamp(36px,5.6vw,64px)/1 var(--display);letter-spacing:-.03em;color:var(--mint);text-decoration:none;font-variant-numeric:tabular-nums}
 .copy{margin-top:14px;background:none;border:1px solid var(--line);color:var(--ink-2);border-radius:999px;padding:8px 14px;font:500 14px var(--body);cursor:pointer}
 .copy:hover{color:var(--ink);border-color:rgba(139,226,43,.5)}
 .final img.enot{width:clamp(170px,22vw,260px);filter:drop-shadow(0 0 40px rgba(139,226,43,.25)) drop-shadow(0 20px 24px rgba(0,0,0,.6))}
@@ -443,8 +446,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     <div class="wrap">
       <div class="sec-head" style="max-width:none">
         <h2>Пора освободить <span>площадку?</span></h2>
-        <p>Скажите, что и откуда нужно вывезти. Подберём контейнер и закрепим цену до выезда.</p>
+        <p class="call-lead">Звони</p>
         <a class="phone" id="phone" href="tel:+79671550303">8 967 155-03-03</a>
+        <p class="punch">И Енот <b>Заберёт!</b></p>
         <button class="copy" id="copyPhone" type="button">Скопировать номер</button>
         <div class="actions">
           <a class="btn btn-main" href="tel:+79671550303">Позвонить</a>

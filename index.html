@@ -366,6 +366,22 @@ main{overflow-x:clip}
 .opts input:focus-visible+label{outline:2px solid var(--green);outline-offset:2px}
 input[type=time]{justify-self:start;min-height:50px;padding:10px 16px;border-radius:14px;background:rgba(5,12,8,.5);border:1px solid var(--line);color:var(--ink);font:600 18px var(--body);color-scheme:dark}
 input[type=time]:focus{outline:none;border-color:var(--green)}
+/* Переключатель «Знаю объём / Подберите мне» */
+.mode{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:rgba(5,12,8,.5);border:1px solid var(--line)}
+.mode input{position:absolute;opacity:0;pointer-events:none}
+.mode label{display:grid;place-items:center;min-height:44px;padding:8px 10px;border-radius:12px;cursor:pointer;font-weight:600;font-size:15px;color:var(--ink-2);text-align:center;transition:.2s}
+.mode label:hover{color:var(--ink)}
+.mode input:checked+label{background:var(--green);color:#08200F}
+.mode input:focus-visible+label{outline:2px solid var(--green);outline-offset:2px}
+#modePick>.field:first-child{margin-top:22px}
+/* Объём + количество в одну строку */
+.size-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:rgba(185,232,160,.05);padding-right:14px}
+.qty button{width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--green);font:600 22px/1 var(--body);cursor:pointer}
+.qty button:hover:not(:disabled){background:rgba(139,226,43,.12)}
+.qty button:disabled{color:rgba(185,232,160,.25);cursor:default}
+.qty output{min-width:28px;text-align:center;font:700 18px var(--display);font-variant-numeric:tabular-nums}
+.qty-unit{margin-left:2px;color:var(--ink-2);font-size:14px}
 .area-row{display:flex;justify-content:space-between;align-items:baseline}
 .area-row output{font:700 22px var(--display);color:var(--mint);font-variant-numeric:tabular-nums}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:linear-gradient(90deg,var(--green) var(--p,13%),rgba(185,232,160,.15) var(--p,13%))}
@@ -553,6 +569,29 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="order">
         <form class="panel" id="orderForm" novalidate>
           <div class="field">
+            <div class="mode" role="radiogroup" aria-label="Как выбрать контейнер">
+              <input type="radio" name="mode" id="m1" value="know" checked><label for="m1">Знаю объём</label>
+              <input type="radio" name="mode" id="m2" value="pick"><label for="m2">Подберите мне</label>
+            </div>
+          </div>
+          <div class="field" id="modeKnow">
+            <span>Контейнер</span>
+            <div class="size-row">
+              <div class="opts">
+                <input type="radio" name="size" id="s8" value="8"><label for="s8">8 м³</label>
+                <input type="radio" name="size" id="s20" value="20" checked><label for="s20">20 м³</label>
+                <input type="radio" name="size" id="s27" value="27"><label for="s27">27 м³</label>
+              </div>
+              <div class="qty" role="group" aria-label="Количество контейнеров">
+                <button type="button" id="qtyMinus" aria-label="Меньше">−</button>
+                <output id="qty" aria-live="polite">1</output>
+                <button type="button" id="qtyPlus" aria-label="Больше">+</button>
+                <span class="qty-unit">шт.</span>
+              </div>
+            </div>
+          </div>
+          <div id="modePick" hidden>
+          <div class="field">
             <span>Что делаете на объекте</span>
             <div class="opts">
               <input type="radio" name="work" id="w1" value="ремонт" data-k="0.12" checked><label for="w1">Ремонт</label>
@@ -564,6 +603,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <div class="field">
             <div class="area-row"><label class="lbl" for="area">Площадь объекта</label><output id="areaOut" for="area">60 м²</output></div>
             <input type="range" id="area" min="10" max="400" step="5" value="60">
+          </div>
           </div>
           <div class="field">
             <span>Когда подать контейнер</span>
@@ -678,18 +718,33 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   var area=document.getElementById('area'),out=document.getElementById('areaOut'),addr=document.getElementById('addr');
   var resVol=document.getElementById('resVol'),resWhy=document.getElementById('resWhy'),recImg=document.getElementById('recImg'),msg=document.getElementById('msg'),wa=document.getElementById('waBtn'),note=document.getElementById('note');
   function val(n){return document.querySelector('input[name='+n+']:checked')}
+  var qtyOut=document.getElementById('qty'),qMinus=document.getElementById('qtyMinus'),qPlus=document.getElementById('qtyPlus'),QMAX=10;
+  /* 1 контейнер, 2 контейнера, 5 контейнеров */
+  function plural(n,one,few,many){var a=n%10,b=n%100;return a===1&&b!==11?one:a>=2&&a<=4&&(b<12||b>14)?few:many}
   function build(){
-    var w=val('work'),a=+area.value,m=Math.max(1,Math.round(a*(+w.dataset.k)));
-    var v=m<=8?8:m<=20?20:27,trips=m>27?Math.ceil(m/27):1;
+    var know=val('mode').value==='know',v,head,why,qty=+qtyOut.value||1,a=+area.value;
+    document.getElementById('modeKnow').hidden=!know;document.getElementById('modePick').hidden=know;
     out.textContent=a+' м²';area.style.setProperty('--p',((a-10)/390*100)+'%');
-    resVol.textContent=(trips>1?trips+' × ':'')+v+' м³';
-    resWhy.textContent='Примерно '+m+' м³ мусора'+(trips>1?', несколько рейсов':'');
+    if(know){
+      v=+val('size').value;qMinus.disabled=qty<=1;qPlus.disabled=qty>=QMAX;
+      resVol.textContent=(qty>1?qty+' × ':'')+v+' м³';
+      resWhy.textContent=qty>1?qty+' '+plural(qty,'контейнер','контейнера','контейнеров')+' по '+v+' м³':'Один контейнер';
+      head=qty>1?'Нужно '+qty+' '+plural(qty,'контейнер','контейнера','контейнеров')+' по '+v+' м³.':'Нужен контейнер '+v+' м³.';
+    }else{
+      var w=val('work'),m=Math.max(1,Math.round(a*(+w.dataset.k))),trips=m>27?Math.ceil(m/27):1;
+      v=m<=8?8:m<=20?20:27;
+      resVol.textContent=(trips>1?trips+' × ':'')+v+' м³';
+      resWhy.textContent='Примерно '+m+' м³ мусора'+(trips>1?', несколько рейсов':'');
+      head='Нужен контейнер '+v+' м³'+(trips>1?' ('+trips+' '+plural(trips,'рейс','рейса','рейсов')+')':'')+'.\nРаботы: '+w.value+', около '+a+' м².';
+    }
     recImg.src='zbox'+v+'.webp';
     var tm=val('time').value,ex=document.getElementById('exactTime');ex.hidden=tm!=='exact';
     var when=val('when').value+', '+(tm==='exact'?'к '+(ex.value||'10:00'):tm);
-    var t='Здравствуйте! Нужен контейнер '+v+' м³'+(trips>1?' ('+trips+' '+(trips%10>=2&&trips%10<=4&&(trips%100<12||trips%100>14)?'рейса':'рейсов')+')':'')+'.\nРаботы: '+w.value+', около '+a+' м².\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
+    var t='Здравствуйте! '+head+'\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
     msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);return t;
   }
+  function setQty(d){qtyOut.value=Math.min(QMAX,Math.max(1,(+qtyOut.value||1)+d));build()}
+  qMinus.addEventListener('click',function(){setQty(-1)});qPlus.addEventListener('click',function(){setQty(1)});
   var f=document.getElementById('orderForm');f.addEventListener('input',build);f.addEventListener('submit',function(e){e.preventDefault()});build();
   function copy(str,el,done){
     function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);done(false)}

@@ -73,6 +73,12 @@
   "telephone": "+7 967 155-03-03",
   "image": "https://enot-zaberet.ru/og-image.jpg",
   "logo": "https://enot-zaberet.ru/logo-enot.webp",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
   "paymentAccepted": "Наличные, безналичный расчёт",
   "areaServed": [
     {"@type": "City", "name": "Москва"},
@@ -113,6 +119,70 @@
       {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Вывоз строительного мусора контейнером 27 м³", "description": "Снос постройки, крупный объект, расчистка участка."}}
     ]
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Сколько стоит вывоз строительного мусора?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Цена зависит от объёма контейнера, адреса и времени подачи. Позвоните или напишите в WhatsApp — назовём стоимость сразу. Цену согласуем до выезда, и на месте она не меняется."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Какой контейнер выбрать?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — ответьте на три вопроса в форме «Заявка за минуту», и мы подберём объём."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как быстро вы подадите контейнер?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Можем подать в день обращения, если есть свободная машина. Время подачи согласуем заранее и приезжаем к нему."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Сколько контейнер может стоять на объекте?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Срок обсуждаем при заказе — под ваш график работ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли грузчики?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, можем помочь с погрузкой мусора за доплату. Скажите об этом при заказе."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что нельзя выбрасывать в контейнер?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Шины и аккумуляторы, краски и химию, ртутные лампы, пищевые и бытовые отходы, асбест и шифер."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Работаете с компаниями?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да. Заключаем договор, принимаем наличный и безналичный расчёт, даём закрывающие документы."
+      }
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -332,6 +402,24 @@ input[type=text]:focus{outline:none;border-color:var(--green)}
 
 footer{border-top:1px solid var(--line)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;color:var(--ink-2);font-size:14px}
+/* Частые вопросы: ответы раскрываются по нажатию */
+.faq{display:grid;gap:10px;margin-top:28px;max-width:860px}
+.faq details{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,var(--card-2),var(--card));transition:border-color .2s}
+.faq details[open]{border-color:rgba(139,226,43,.45)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font:600 17px/1.35 var(--body);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(139,226,43,.12);color:var(--green);font-size:20px;font-weight:600;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 22px 20px;color:var(--ink-2);font-size:16px;max-width:70ch}
+@media (max-width:520px){.faq summary{padding:16px 18px;font-size:16px}.faq details p{padding:0 18px 18px}}
+/* Города: свёрнутая строка в подвале */
+.cities{border-top:1px solid var(--line)}
+.cities details{padding-block:16px;color:var(--ink-2);font-size:14px}
+.cities summary{cursor:pointer;list-style:none}
+.cities summary::-webkit-details-marker{display:none}
+.cities summary b{color:var(--green);font-weight:600;white-space:nowrap}
+.cities details[open] summary b{display:none}
+.cities details p{margin-top:8px}
 
 /* Нижняя панель на телефоне */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:35;padding:0 max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));pointer-events:none}
@@ -393,7 +481,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <section class="hero">
     <div class="wrap">
       <div>
-        <h1>Вывоз строительного <em>мусора</em></h1>
+        <h1>Вывоз строительного <em>мусора</em> <span>в Москве и Московской области</span></h1>
         <p class="lead">Освобождаем квартиры, дома и стройплощадки от того, что осталось после работ.</p>
         <div class="actions">
           <a class="btn btn-main" href="tel:+79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Узнать цену</a>
@@ -524,6 +612,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     </div>
   </section>
 
+  <section class="sec" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><h2>Частые <span>вопросы</span></h2></div>
+      <div class="faq">
+        <details><summary>Сколько стоит вывоз строительного мусора?</summary><p>Цена зависит от объёма контейнера, адреса и времени подачи. Позвоните или напишите в WhatsApp — назовём стоимость сразу. Цену согласуем до выезда, и на месте она не меняется.</p></details>
+        <details><summary>Какой контейнер выбрать?</summary><p>8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — ответьте на три вопроса в форме «Заявка за минуту», и мы подберём объём.</p></details>
+        <details><summary>Как быстро вы подадите контейнер?</summary><p>Можем подать в день обращения, если есть свободная машина. Время подачи согласуем заранее и приезжаем к нему.</p></details>
+        <details><summary>Сколько контейнер может стоять на объекте?</summary><p>Срок обсуждаем при заказе — под ваш график работ.</p></details>
+        <details><summary>Есть ли грузчики?</summary><p>Да, можем помочь с погрузкой мусора за доплату. Скажите об этом при заказе.</p></details>
+        <details><summary>Что нельзя выбрасывать в контейнер?</summary><p>Шины и аккумуляторы, краски и химию, ртутные лампы, пищевые и бытовые отходы, асбест и шифер.</p></details>
+        <details><summary>Работаете с компаниями?</summary><p>Да. Заключаем договор, принимаем наличный и безналичный расчёт, даём закрывающие документы.</p></details>
+      </div>
+    </div>
+  </section>
+
   <section class="sec final" id="contacts" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head" style="max-width:none">
@@ -558,6 +661,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 </section>
 
 <footer>
+  <div class="cities"><div class="wrap"><details><summary>Работаем по Москве и области: Химки, Балашиха, Подольск… <b>показать все</b></summary><p>Подаём контейнер в любой район Москвы — внутри МКАД и за ним — и по всей Московской области: Химки, Балашиха, Подольск, Мытищи, Королёв, Люберцы, Красногорск, Одинцово, Домодедово, Щёлково, Раменское, Долгопрудный, Реутов, Пушкино, Видное, Электросталь, Жуковский, Сергиев Посад. Вашего города нет в списке? Позвоните — скорее всего, приедем и туда.</p></details></div></div>
   <div class="wrap"><span>Енот Заберёт · вывоз строительного мусора · Москва и Московская область</span><span>8 967 155-03-03</span></div>
 </footer>
 

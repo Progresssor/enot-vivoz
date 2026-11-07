@@ -42,8 +42,18 @@
 @media (prefers-reduced-motion:reduce){.road .truck,.road .truck img,.road .lane,.road .dust i,.road .speed{animation:none!important}}
 </style>
 <title>Енот Заберёт</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Вывоз строительного мусора в Москве и Московской области. Контейнеры 8, 20 и 27 м³. Цену называем до выезда и не меняем на месте.">
+<link rel="icon" type="image/webp" href="logo-enot.webp">
+<link rel="apple-touch-icon" href="logo-enot.webp">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Енот Заберёт">
+<meta property="og:title" content="Енот Заберёт — вывоз строительного мусора">
+<meta property="og:description" content="Контейнеры 8, 20 и 27 м³ по Москве и области. Цену называем до выезда и не меняем на месте.">
+<meta property="og:url" content="https://progresssor.github.io/enot-vivoz/">
+<meta property="og:image" content="https://progresssor.github.io/enot-vivoz/ztruck.webp">
+<meta property="og:image:alt" content="Зелёный самосвал «Енот Заберёт», за рулём енот">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Pangolin&display=swap">
@@ -501,7 +511,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     recImg.src='zbox'+v+'.webp';
     var tm=val('time').value,ex=document.getElementById('exactTime');ex.hidden=tm!=='exact';
     var when=val('when').value+', '+(tm==='exact'?'к '+(ex.value||'10:00'):tm);
-    var t='Здравствуйте! Нужен контейнер '+v+' м³'+(trips>1?' ('+trips+' рейса)':'')+'.\nРаботы: '+w.value+', около '+a+' м².\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
+    var t='Здравствуйте! Нужен контейнер '+v+' м³'+(trips>1?' ('+trips+' '+(trips%10>=2&&trips%10<=4&&(trips%100<12||trips%100>14)?'рейса':'рейсов')+')':'')+'.\nРаботы: '+w.value+', около '+a+' м².\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
     msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);return t;
   }
   var f=document.getElementById('orderForm');f.addEventListener('input',build);f.addEventListener('submit',function(e){e.preventDefault()});build();

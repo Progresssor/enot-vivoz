@@ -164,6 +164,11 @@
     },
     {
       "@type": "Question",
+      "name": "Что нужно на месте?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Ровная площадка под контейнер и подъезд для самосвала. Пришлите фото места в WhatsApp, подскажем, встанет ли контейнер."}
+    },
+    {
+      "@type": "Question",
       "name": "Есть ли грузчики?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -202,7 +207,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=Pangolin&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Golos+Text:wght@400;500;600;700&family=Pangolin&display=swap">
 <style>
 /* Стройплощадка ночью: сталь контейнера, светоотражающая лента жилета, трафаретные цифры. Зелёный только для действий. */
 :root{
@@ -437,11 +442,6 @@ html{scrollbar-color:var(--steel) var(--bg)}
 .pill{min-height:44px;border-color:rgba(244,246,241,.18)}
 .pill:hover{background:rgba(255,255,255,.05);border-color:var(--ink)}
 
-/* Светоотражающая лента — единственный разделитель */
-.tape{height:14px;background:
-  linear-gradient(180deg,var(--green) 0 3px,transparent 3px calc(100% - 3px),var(--green) calc(100% - 3px)),
-  linear-gradient(90deg,#9EA39A,#E9ECE6 30%,#A7ACA3 46%,#F4F6F2 62%,#9EA39A)}
-
 /* Заголовки: крупно, заглавными, одним цветом */
 h1,h2,h3{font-family:var(--display)}
 .hero h1{font-size:clamp(34px,4.6vw,68px);line-height:1;letter-spacing:-.04em;text-transform:uppercase}
@@ -453,7 +453,7 @@ h1,h2,h3{font-family:var(--display)}
 
 /* Без свечения */
 .hero,.motto{background:none}
-.motto{border:0}
+.motto{border-block:1px solid var(--line)}
 .mascot::before,.road::after{display:none}
 .motto p{font-weight:700;font-size:clamp(26px,4.4vw,56px);letter-spacing:-.04em}
 .motto p em{color:var(--yellow)}
@@ -518,7 +518,7 @@ input[type=text]::placeholder{color:#7D857A}
 
 /* Финал: енот рядом */
 @media (min-width:901px){.final .wrap{grid-template-columns:minmax(0,1fr) auto}}
-.final img.enot{width:clamp(180px,24vw,300px);height:auto;filter:drop-shadow(0 20px 24px rgba(0,0,0,.6))}
+.final img.enot{width:clamp(150px,17vw,220px);height:auto;filter:drop-shadow(0 20px 24px rgba(0,0,0,.6))}
 .phone{color:var(--ink);padding-block:4px;white-space:nowrap}
 @media (max-width:900px){.phone{font-size:min(8.2vw,52px)}}
 .copy{min-height:44px;padding:0 18px;border-color:rgba(244,246,241,.18)}
@@ -526,7 +526,6 @@ input[type=text]::placeholder{color:#7D857A}
 @media (max-width:900px){.final img.enot{width:min(60%,240px)}}
 
 /* Самосвал: лента вместо свечения, мотор успокаивается */
-.road-tape{position:absolute;left:0;right:0;bottom:34%;z-index:0}
 /* дорога по высоте машины, чтобы самосвал не наезжал на кнопки */
 .road{height:calc(min(76vw,720px) * .64 + 36px)}
 @media (max-width:620px){.road{height:calc(94vw * .64 + 30px)}}
@@ -551,6 +550,51 @@ input[type=text]::placeholder{color:#7D857A}
   .unit h3{margin-top:6px;font-size:16px}
   .unit .btn{margin-top:12px;min-height:44px}
 }
+
+/* ---------- Доработки по разбору (2026-11-09) ---------- */
+/* Заголовки тоньше и спокойнее, главный — крупнее */
+.hero h1{font-weight:500;font-size:clamp(36px,5.2vw,76px)}
+.sec-head h2,.go-head h2{font-weight:500}
+.logo{font-weight:800}
+/* Ровный воздух между блоками: каждый начинается со своего экрана */
+.sec{padding-block:clamp(72px,10vw,128px)}
+.box-head,.order-head{display:block}
+/* Главный экран на весь экран и мягкое появление */
+@media (min-width:901px){.hero .wrap{min-height:calc(100svh - 79px);align-items:end}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.hero h1{animation:up .7s cubic-bezier(.16,1,.3,1) both}
+.hero .lead{animation:up .7s .12s cubic-bezier(.16,1,.3,1) both}
+.hero .actions{animation:up .7s .22s cubic-bezier(.16,1,.3,1) both}
+.hero .trust{animation:up .7s .3s cubic-bezier(.16,1,.3,1) both}
+/* Слоган: отдельный экран, слова загораются при прокрутке */
+.motto{min-height:72svh;display:grid;align-items:center}
+.motto .w{transition:color .35s ease-out}
+.motto.js-words .w{color:rgba(244,246,241,.16)}
+.motto.js-words .w.on{color:var(--ink)}
+.motto.js-words em .w.on{color:var(--yellow)}
+/* Текст, который читают, — не мельче 16px */
+.checks p,.unit p,.msg{font-size:16px}
+.trust{font-size:15px;color:var(--ink)}
+/* Контейнеры откликаются на мышку */
+.unit img{transition:transform .35s cubic-bezier(.23,1,.32,1)}
+@media (hover:hover){.unit:hover img{transform:translateY(-4px) scale(1.02)}}
+.unit:focus-within .btn{outline-offset:3px}
+/* Прорабам и компаниям */
+.pro-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 48px;align-items:end;padding-block:clamp(28px,4vw,48px);border-block:1px solid var(--line)}
+.pro .sec-head{max-width:620px}
+.pro .actions{margin-top:0}
+@media (max-width:900px){.pro-grid{grid-template-columns:minmax(0,1fr)}}
+/* Галочки в форме выглядят как остальные варианты */
+.opts input[type=checkbox]+label::before{content:"";width:16px;height:16px;margin-right:8px;border-radius:4px;border:1.5px solid rgba(244,246,241,.4);flex:none}
+.opts input[type=checkbox]:checked+label::before{border-color:var(--green-ink);background:var(--green-ink)}
+/* Самосвал: пыль не вылезает, мотор затихает быстрее, заголовок по левому краю */
+.road{overflow:clip}
+.road.idle .truck img{animation:idle .12s linear 16 alternate}
+.road.idle .dust i:nth-child(6){animation:puff 1.6s ease-out 1}
+.go-head{text-align:left}
+.go-head p{margin-left:0}
+.go-actions{justify-content:flex-start}
+@media (max-width:900px){.hero h1{font-size:min(8vw,44px)}}
 </style>
 </head>
 <body>
@@ -576,20 +620,18 @@ input[type=text]::placeholder{color:#7D857A}
           <a class="btn btn-main" href="tel:+79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Узнать цену</a>
           <a class="btn btn-soft" href="#containers">Выбрать контейнер</a>
         </div>
-        <div class="trust"><span><i></i>8, 20 и 27 м³</span><span><i></i>Цена фиксирована</span><span><i></i>Подача в оговорённое время</span></div>
+        <div class="trust"><span><i></i>Звонки круглосуточно</span><span><i></i>Можем приехать сегодня</span><span><i></i>Цена до выезда</span></div>
       </div>
       <div class="mascot"><img src="enot3d.webp" fetchpriority="high" alt="Енот Заберёт в кепке, очках и сигнальном жилете показывает большой палец" width="761" height="1300"></div>
     </div>
   </section>
 
-  <div class="tape" role="presentation"></div>
-  <section class="motto">
+  <section class="motto" id="motto">
     <div class="wrap">
       <p>Москва строит. Область ремонтирует. <em>Енот заберёт!</em></p>
       <small>Работаем по Москве и Московской области.</small>
     </div>
   </section>
-  <div class="tape" role="presentation"></div>
 
   <section class="sec">
     <div class="wrap promise">
@@ -605,15 +647,14 @@ input[type=text]::placeholder{color:#7D857A}
     </div>
   </section>
 
-  <section class="sec" id="containers" style="padding-top:0">
+  <section class="sec" id="containers">
     <div class="wrap">
       <div class="box-head">
         <div class="sec-head"><h2>Контейнеры <span>под любой объём</span></h2><p>Позвоните или напишите, и мы сразу назовём цену. Габариты примерные.</p></div>
-        <div class="hauler" aria-hidden="true"><img src="enot-bag.webp" alt="" width="748" height="1100" loading="lazy"></div>
       </div>
       <div class="lineup">
         <article class="unit" data-v="8">
-          <figure><img src="zbox8.webp" alt="Контейнер 8 м³ для вывоза строительного мусора" width="1000" height="506" loading="lazy"></figure>
+          <figure><img src="zbox8.webp" srcset="zbox8-500.webp 500w, zbox8.webp 1000w" sizes="(max-width:900px) 40vw, 32vw" alt="Контейнер 8 м³ для вывоза строительного мусора" width="1000" height="506" loading="lazy"></figure>
           <div class="ground" aria-hidden="true"></div>
           <div class="vnum">8<small>м³</small></div>
           <h3>Компактный</h3>
@@ -622,7 +663,7 @@ input[type=text]::placeholder{color:#7D857A}
           <a class="btn btn-soft" href="tel:+79671550303">Узнать цену</a>
         </article>
         <article class="unit" data-v="20">
-          <figure><img src="zbox20.webp" alt="Контейнер 20 м³ для вывоза строительного мусора" width="1000" height="555" loading="lazy"></figure>
+          <figure><img src="zbox20.webp" srcset="zbox20-500.webp 500w, zbox20.webp 1000w" sizes="(max-width:900px) 40vw, 32vw" alt="Контейнер 20 м³ для вывоза строительного мусора" width="1000" height="555" loading="lazy"></figure>
           <div class="ground" aria-hidden="true"></div>
           <div class="vnum">20<small>м³</small></div>
           <h3>Средний <span class="badge">Берут чаще</span></h3>
@@ -631,7 +672,7 @@ input[type=text]::placeholder{color:#7D857A}
           <a class="btn btn-main" href="tel:+79671550303">Узнать цену</a>
         </article>
         <article class="unit" data-v="27">
-          <figure><img src="zbox27.webp" alt="Контейнер 27 м³ для вывоза строительного мусора" width="1000" height="510" loading="lazy"></figure>
+          <figure><img src="zbox27.webp" srcset="zbox27-500.webp 500w, zbox27.webp 1000w" sizes="(max-width:900px) 40vw, 32vw" alt="Контейнер 27 м³ для вывоза строительного мусора" width="1000" height="510" loading="lazy"></figure>
           <div class="ground" aria-hidden="true"></div>
           <div class="vnum">27<small>м³</small></div>
           <h3>Большой</h3>
@@ -643,11 +684,10 @@ input[type=text]::placeholder{color:#7D857A}
     </div>
   </section>
 
-  <section class="sec" id="order" style="padding-top:0">
+  <section class="sec" id="order">
     <div class="wrap">
       <div class="order-head">
         <div class="sec-head"><h2>Заявка <span>за минуту</span></h2><p>Выберите контейнер, время и адрес. Мы подготовим сообщение, вам останется его отправить.</p></div>
-        <div class="caller" aria-hidden="true"><span class="call-bubble">Откуда забрать мусор?</span><img src="enot-phone.webp" alt="" width="800" height="871" loading="lazy"></div>
       </div>
       <div class="order">
         <form class="panel" id="orderForm" novalidate>
@@ -708,6 +748,13 @@ input[type=text]::placeholder{color:#7D857A}
             <input type="time" id="exactTime" value="10:00" aria-label="Точное время подачи" hidden>
           </div>
           <div class="field">
+            <span>Дополнительно</span>
+            <div class="opts">
+              <input type="checkbox" id="x1" name="extra" value="loaders"><label for="x1">Нужны грузчики</label>
+              <input type="checkbox" id="x2" name="extra" value="company"><label for="x2">Для компании (договор, безнал)</label>
+            </div>
+          </div>
+          <div class="field">
             <label for="addr">Адрес объекта</label>
             <p style="color:var(--ink-2);font-size:15px;margin-top:-4px">Укажите адрес объекта — уточним возможность, стоимость и время вывоза в вашем районе.</p>
             <div class="addr-row">
@@ -735,7 +782,17 @@ input[type=text]::placeholder{color:#7D857A}
     </div>
   </section>
 
-  <section class="sec" id="faq" style="padding-top:0">
+  <section class="sec pro" id="pro">
+    <div class="wrap pro-grid">
+      <div class="sec-head"><h2>Прорабам и компаниям</h2><p>Заключаем договор, работаем по безналу, даём закрывающие документы. Сохраните номер — следующий контейнер закажете одним звонком.</p></div>
+      <div class="actions">
+        <a class="btn btn-main" href="enot-zaberet.vcf" download="enot-zaberet.vcf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>Сохранить контакт</a>
+        <a class="btn btn-soft" href="tel:+79671550303">Позвонить</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq">
     <div class="wrap">
       <div class="sec-head"><h2>Частые <span>вопросы</span></h2></div>
       <div class="faq">
@@ -743,6 +800,7 @@ input[type=text]::placeholder{color:#7D857A}
         <details><summary>Какой контейнер выбрать?</summary><p>8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — нажмите «Подберите мне» в форме «Заявка за минуту», и мы подберём объём.</p></details>
         <details><summary>Как быстро вы подадите контейнер?</summary><p>Можем подать в день обращения, если есть свободная машина. Время подачи согласуем заранее и приезжаем к нему.</p></details>
         <details><summary>Сколько контейнер может стоять на объекте?</summary><p>Срок обсуждаем при заказе — под ваш график работ.</p></details>
+        <details><summary>Что нужно на месте?</summary><p>Ровная площадка под контейнер и подъезд для самосвала. Пришлите фото места в WhatsApp, подскажем, встанет ли контейнер.</p></details>
         <details><summary>Есть ли грузчики?</summary><p>Да, можем помочь с погрузкой мусора за доплату. Скажите об этом при заказе.</p></details>
         <details><summary>Что нельзя выбрасывать в контейнер?</summary><p>Шины и аккумуляторы, краски и химию, ртутные лампы, пищевые и бытовые отходы, асбест и шифер.</p></details>
         <details><summary>Работаете с компаниями?</summary><p>Да. Заключаем договор, принимаем наличный и безналичный расчёт, даём закрывающие документы.</p></details>
@@ -750,7 +808,7 @@ input[type=text]::placeholder{color:#7D857A}
     </div>
   </section>
 
-  <section class="sec final" id="contacts" style="padding-top:0">
+  <section class="sec final" id="contacts">
     <div class="wrap">
       <div class="sec-head" style="max-width:none">
         <h2>Пора освободить <span>площадку?</span></h2>
@@ -764,7 +822,7 @@ input[type=text]::placeholder{color:#7D857A}
           <a class="btn btn-soft js-max" href="https://max.ru/">Макс</a>
         </div>
       </div>
-      <img class="enot" src="enot.webp" alt="" width="700" height="700" loading="lazy">
+      <img class="enot" src="logo-enot.webp" alt="" width="263" height="300" loading="lazy">
     </div>
   </section>
 </main>
@@ -779,11 +837,10 @@ input[type=text]::placeholder{color:#7D857A}
     </div>
   </div>
   <div class="road" id="road">
-    <div class="tape road-tape" role="presentation"></div>
     <div class="lane" aria-hidden="true"></div>
     <div class="truck" id="truck">
       <div class="speed" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <img src="ztruck.webp" alt="Зелёный самосвал «Енот Заберёт» для вывоза строительного мусора по Москве и области" width="1200" height="764" loading="lazy">
+      <img src="ztruck.webp" srcset="ztruck-700.webp 700w, ztruck.webp 1200w" sizes="(max-width:620px) 94vw, min(76vw,720px)" alt="Зелёный самосвал «Енот Заберёт» для вывоза строительного мусора по Москве и области" width="1200" height="764" loading="lazy">
       <div class="dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
@@ -804,6 +861,37 @@ input[type=text]::placeholder{color:#7D857A}
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
+/* Слоган: слова загораются по мере прокрутки, «Енот заберёт!» — жёлтым */
+(function(){
+  var sec=document.getElementById('motto');if(!sec)return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var p=sec.querySelector('p'),words=[];
+  (function wrap(node){
+    Array.prototype.slice.call(node.childNodes).forEach(function(n){
+      if(n.nodeType===3){
+        var f=document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(t){
+          if(!t)return;
+          if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(t));return}
+          var w=document.createElement('span');w.className='w';w.textContent=t;words.push(w);f.appendChild(w);
+        });
+        n.parentNode.replaceChild(f,n);
+      }else if(n.nodeType===1)wrap(n);
+    });
+  })(p);
+  sec.classList.add('js-words');
+  var ticking=false;
+  function upd(){
+    ticking=false;
+    var r=p.getBoundingClientRect(),vh=innerHeight;
+    /* текст внизу экрана — всё серое, поднялся до 40% высоты — всё горит */
+    var k=Math.min(1,Math.max(0,(vh*.92-r.top)/(vh*.52)));
+    var on=Math.round(k*words.length);
+    words.forEach(function(w,i){w.classList.toggle('on',i<on)});
+  }
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});
+  addEventListener('resize',upd);upd();
+})();
 (function(){
   var area=document.getElementById('area'),out=document.getElementById('areaOut'),addr=document.getElementById('addr');
   var resVol=document.getElementById('resVol'),resWhy=document.getElementById('resWhy'),recImg=document.getElementById('recImg'),msg=document.getElementById('msg'),wa=document.getElementById('waBtn'),note=document.getElementById('note');
@@ -830,7 +918,7 @@ input[type=text]::placeholder{color:#7D857A}
     recImg.src='zbox'+v+'.webp';
     var tm=val('time').value,ex=document.getElementById('exactTime');ex.hidden=tm!=='exact';
     var when=val('when').value+', '+(tm==='exact'?'к '+(ex.value||'10:00'):tm);
-    var t='Здравствуйте! '+head+'\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
+    var t='Здравствуйте! '+head+'\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+(document.getElementById('x1').checked?'\nНужна помощь с погрузкой.':'')+(document.getElementById('x2').checked?'\nОформляем на компанию, нужен договор.':'')+'\nПодскажите цену.';
     msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);
     /* после того как клиент тронул форму, все кнопки WhatsApp несут готовую заявку */
     if(touched)document.querySelectorAll('.js-wa').forEach(function(a){a.href=wa.href});

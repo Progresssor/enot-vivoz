@@ -1,24 +1,31 @@
 # Design
 
-World: a dark green night showroom. Soft light falls from above, out-of-focus foliage frames the edges, and containers stand as exhibits on round podiums. The raccoon mascot sits under a glass dome. The style follows a reference the owner supplied (a premium plant-shop layout).
+World: a construction site at night, told through the materials of the job. Steel of the branded containers, the reflective tape of the raccoon's hi-vis vest, stencil numerals painted on metal. Restraint reads as expensive: no glows, one action colour. Chosen by the owner on 2026-11-09 ("Тёмный строже").
 
 ## Color
-- Ground #07150D → #0B1F14 with radial green light pools
-- Cards #143221 → #10291B, hairlines rgba(170,230,150,.12)
-- Ink #EEF5EA, secondary #A9BCA6, headline mint #B9E8A0
-- Brand green #8BE22B (primary buttons as a #9BEA45→#6FC21C gradient, dots, selected states)
+- Ground #0A0C0A, raised panels #121512, hairlines rgba(255,255,255,.08), steel #2A302A
+- Ink #F4F6F1, secondary #A9B0A5
+- Green #8BE22B — actions only (primary buttons, selected chips, dock call). Text on green #0B1F06
+- Yellow #FFD21F — brand signature, used sparingly: «ЗАБЕРЁТ» lettering, slogan emphasis, «Берут чаще» tag, list markers, promise icons
+- No radial glows, no gradient buttons, no coloured halos
 
 ## Type
-- Manrope: headlines at 600, second line of a heading at 300 in ink color
+- Unbounded 700/800: headings, uppercase, tight tracking; stencil numerals 8 / 20 / 27
 - Golos Text: body and UI
+- Pangolin: only the hand-lettered «ЗАБЕРЁТ»
+
+## Motifs
+- Reflective tape (lime edges, silver core) is the one divider: around the slogan and on the road under the truck
+- Stencil numerals: a thin horizontal bridge cut through the container volumes
+- Containers stand in one line at true relative scale (3.6 / 6.0 / 6.0 m) on a shared ground line; on phones a compact list
 
 ## Imagery
-- hero-container.webp: owner's real container photo, background removed, phone repainted to 8 967 155-03-03
-- c8/c20/c27.webp: 3D renders (three.js) in brand livery on podiums. Illustrative, not photos.
-- Foliage: inline SVG leaves at three blur depths
+- zbox8/20/27.webp: owner's real branded containers, background removed
+- ztruck.webp: liveried truck «Сервис Енот Заберёт»
+- Raccoon mascots: enot3d (hero), enot-bag (containers), enot-phone (order), enot (final)
 
 ## Components
-Rounded 28px cards, 14px buttons, pill chips for options, glass dome with highlight strips, CSS podium (ellipse top plus dark rim). On phones, a floating dock with Call / WhatsApp / Max.
+14px buttons, flat green primary, outlined secondary, press scale .97 on tap. Panels 20px radius. The order message reads as a receipt (dashed rules, no nested card); result panel is sticky on desktop. On phones a fixed dock: Call / WhatsApp / Max.
 
 ## Motion
-The hero container rises softly on load. Cards lift on hover.
+One authored moment: the truck drives in, brakes, idles for ~3 s and settles. Mascots appear once and rest. Toast for Max copy slides up 200 ms ease-out. Everything off under prefers-reduced-motion.

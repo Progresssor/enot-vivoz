@@ -10,6 +10,10 @@
 .go-head h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;color:var(--ink)}
 .go-head h2 span{color:var(--green)}
 .go-head p{color:var(--ink-2);margin:12px auto 0;max-width:46ch}
+.go-actions{justify-content:center;margin-top:22px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:60;width:min(92vw,440px);padding:14px 18px;border-radius:14px;background:#EEF5EA;color:#08200F;font:600 15px/1.4 var(--body);box-shadow:0 18px 40px rgba(0,0,0,.45);transform:translate(-50%,12px);opacity:0;transition:opacity .2s ease-out,transform .2s ease-out}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:901px){.toast{bottom:32px}}
 .road{position:relative;height:clamp(250px,36vw,470px);margin-top:12px}
 .road::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#151a14,#0b0f0a);border-top:1px solid rgba(255,255,255,.06)}
 .road::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:radial-gradient(50% 60% at 50% 100%,rgba(139,226,43,.18),transparent 70%);pointer-events:none}
@@ -139,7 +143,7 @@
       "name": "Какой контейнер выбрать?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — ответьте на три вопроса в форме «Заявка за минуту», и мы подберём объём."
+        "text": "8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — нажмите «Подберите мне» в форме «Заявка за минуту», и мы подберём объём."
       }
     },
     {
@@ -198,9 +202,9 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Golos+Text:wght@400;500;600;700&family=Pangolin&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=Pangolin&display=swap">
 <style>
-/* Ночной зелёный шоурум: мягкий верхний свет, тёмная листва по краям, контейнеры как экспонаты на подиумах */
+/* Стройплощадка ночью: сталь контейнера, светоотражающая лента жилета, трафаретные цифры. Зелёный только для действий. */
 :root{
   --bg:#030805; --bg-2:#06100A; --card:#08130C; --card-2:#0D1E13; --line:rgba(139,226,43,.16);
   --ink:#FFFFFF; --ink-2:#B3C1AE; --mint:#8BE22B; --green:#8BE22B; --black:#050C08;
@@ -221,11 +225,6 @@ h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.
 :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:12px}
 .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 
-/* Листва */
-.leaves{position:absolute;pointer-events:none;z-index:0}
-.leaves svg{display:block;width:100%;height:auto}
-.blur-1{filter:blur(1.5px)}.blur-2{filter:blur(6px);opacity:.7}.blur-3{filter:blur(14px);opacity:.5}
-
 /* Шапка */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);background:rgba(7,21,13,.6);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
@@ -244,8 +243,6 @@ h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.
 /* Кнопки */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:14px 26px;border-radius:14px;font:600 16px var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;color:var(--ink);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s,box-shadow .25s}
 .btn svg{width:19px;height:19px;flex:none}
-.btn-main{background:linear-gradient(180deg,#9BEA45,#6FC21C);color:#08200F;box-shadow:0 10px 30px -10px rgba(139,226,43,.6),inset 0 1px 0 rgba(255,255,255,.35)}
-.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(139,226,43,.7),inset 0 1px 0 rgba(255,255,255,.35)}
 .btn-soft{background:rgba(139,226,43,.06);border-color:rgba(139,226,43,.35)}
 .btn-soft:hover{background:rgba(185,232,160,.14)}
 
@@ -269,15 +266,7 @@ h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;letter-spacing:-.
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 .trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;color:var(--ink-2);font-size:14px}
 .trust span{display:inline-flex;align-items:center;gap:8px}
-.trust i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
-
-/* Подиум */
-.stage{position:relative;padding-bottom:9%}
-.stage .obj{position:relative;z-index:2;display:block;width:100%;max-width:100%;margin-left:0;height:auto;filter:drop-shadow(0 30px 30px rgba(0,0,0,.55))}
-.podium{position:absolute;left:4%;right:4%;bottom:0;aspect-ratio:5/1;z-index:1}
-.podium::before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(60% 70% at 50% 35%,#1E5A26,#0A2210 72%);box-shadow:inset 0 2px 0 rgba(139,226,43,.7),0 0 40px rgba(139,226,43,.18),0 40px 60px -20px rgba(0,0,0,.9)}
-.podium::after{content:"";position:absolute;left:0;right:0;top:50%;height:34%;border-radius:0 0 50% 50%/0 0 100% 100%;background:linear-gradient(180deg,#0A1E0E,#030805);z-index:-1}
-.glow{position:absolute;left:5%;right:5%;top:0;height:80%;background:radial-gradient(closest-side,rgba(139,226,43,.28),transparent);filter:blur(20px);z-index:0}
+.trust i{width:12px;height:4px;border-radius:1px;background:var(--yellow)}
 
 /* Секции */
 .sec{position:relative;padding-block:clamp(56px,9vw,110px)}
@@ -289,14 +278,6 @@ main{overflow-x:clip}
 
 /* Енот под колпаком */
 .promise{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
-.dome-stage{position:relative;max-width:420px;width:100%;justify-self:center;padding-bottom:12%}
-.dome{position:relative;z-index:2;aspect-ratio:1/1.05;border-radius:48% 48% 6px 6px/42% 42% 6px 6px;
-  background:linear-gradient(90deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 22%,rgba(255,255,255,0) 50%,rgba(255,255,255,.03) 78%,rgba(255,255,255,.12)),radial-gradient(80% 50% at 50% 0,rgba(255,255,255,.08),transparent);
-  border:1px solid rgba(220,255,210,.22);box-shadow:inset 0 0 40px rgba(185,232,160,.08);display:grid;place-items:end center;overflow:hidden}
-.dome::before{content:"";position:absolute;left:14%;top:10%;width:9%;height:58%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));filter:blur(2px);z-index:2}
-.dome::after{content:"";position:absolute;right:12%;top:18%;width:4%;height:30%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));z-index:2}
-.dome img{width:82%;margin-bottom:-2%;filter:drop-shadow(0 18px 18px rgba(0,0,0,.5))}
-.dome-stage .podium{left:-6%;right:-6%}
 .checks{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px}
 @media (max-width:900px){.checks{grid-template-columns:minmax(0,1fr)}}
 .checks li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
@@ -306,8 +287,6 @@ main{overflow-x:clip}
 .checks h3{font:600 18px var(--display);letter-spacing:-.01em}
 .checks p{color:var(--ink-2);font-size:15px;margin-top:2px}
 
-/* Контейнеры */
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:40px}
 .box-head{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px}
 .hauler{position:relative;z-index:3;width:clamp(150px,17vw,230px);margin-bottom:-14px;margin-right:6%}
 .hauler img{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 18px rgba(0,0,0,.55));animation:haul 3.2s ease-in-out infinite}
@@ -317,31 +296,6 @@ main{overflow-x:clip}
 @keyframes haul{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(-6px) rotate(-1.5deg)}}
 @media (max-width:620px){.box-head{grid-template-columns:minmax(0,1fr)}.hauler{justify-self:end;width:140px;margin:-4px 10px -10px 0}}
 @media (prefers-reduced-motion:reduce){.hauler img{animation:none}}
-.card{position:relative;border-radius:28px;padding:26px 24px 24px;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line);display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s}
-.card::before{content:"";position:absolute;left:50%;top:-25%;width:110%;aspect-ratio:1;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(139,226,43,.2),transparent);pointer-events:none}
-.card:hover{transform:translateY(-6px);border-color:rgba(139,226,43,.35)}
-.card.pop{border-color:rgba(139,226,43,.4)}
-.card .pic{position:relative;height:210px;overflow:hidden}
-.card>:not(.pic):not(.badge){position:relative;z-index:2}
-.card .pic::after{content:"";position:absolute;left:12%;right:12%;bottom:6%;height:18%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.75),transparent);z-index:0}
-.card .pic img{position:absolute;inset:4% 5% 6%;width:90%;height:90%;object-fit:contain;z-index:1}
-.card .pic img{filter:drop-shadow(0 16px 18px rgba(0,0,0,.45));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.card:hover .pic img{transform:scale(1.04)}
-.vol{display:flex;align-items:baseline;gap:10px}
-.vol b{font:700 44px/1 var(--display);letter-spacing:-.03em}
-.vol span{color:var(--green);font-weight:700}
-.card p{color:var(--ink-2);font-size:15px}
-.dims{font-size:13px;font-variant-numeric:tabular-nums;margin-top:8px}
-.badge{position:absolute;top:18px;right:18px;z-index:2;padding:6px 12px;border-radius:999px;background:rgba(139,226,43,.16);color:var(--green);font-size:12px;font-weight:700;letter-spacing:.04em}
-.card .btn{width:100%;min-height:48px;border-radius:12px;margin-top:4px}
-
-/* Реальный контейнер */
-.real{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(24px,4vw,56px);align-items:center}
-.real figure{margin:0;border-radius:28px;overflow:hidden;border:1px solid var(--line);position:relative}
-.real figure img{display:block;width:100%;height:auto}
-.real figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(5,12,8,.6));pointer-events:none}
-.real figcaption{position:absolute;left:20px;bottom:16px;z-index:1;font-size:14px}
-
 /* Заявка */
 .order{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:20px;margin-top:40px}
 .order-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:20px;align-items:end}
@@ -399,13 +353,6 @@ input[type=text]:focus{outline:none;border-color:var(--green)}
 .result .btn{width:100%}
 .note{font-size:14px;color:var(--mint);min-height:1.2em}
 
-/* Шаги */
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px;counter-reset:s}
-.step{position:relative;padding-top:30px;border-top:1px solid var(--line)}
-.step::before{counter-increment:s;content:counter(s);position:absolute;top:-17px;left:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bg-2);border:1px solid rgba(139,226,43,.5);color:var(--green);font:700 15px var(--display)}
-.step h3{font:600 20px var(--display)}
-.step p{color:var(--ink-2);margin-top:8px}
-
 /* Финал */
 .final .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:center}
 .final .sec-head .call-lead{margin-top:22px!important;font:700 clamp(22px,2.6vw,30px)/1 var(--display);color:var(--ink)!important}
@@ -449,23 +396,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 @media (min-width:901px){body{padding-bottom:0}.dock{display:none}}
 @media (max-width:900px){
   .menu{display:none}
-  .hero .wrap,.promise,.real,.order,.final .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero .wrap,.promise,.order,.final .wrap{grid-template-columns:minmax(0,1fr)}
   .hero .wrap{padding-top:28px;padding-bottom:0;gap:8px}
   .hero .wrap>div:first-child{padding-bottom:16px}
   .mascot{width:min(70%,290px)}
   .hero{background:radial-gradient(90% 40% at 50% 78%,rgba(64,170,30,.32),transparent 70%),linear-gradient(180deg,#071209,var(--bg))}
   .cards{grid-template-columns:minmax(0,1fr)}
-  .steps{grid-template-columns:minmax(0,1fr);gap:40px}
   .final img.enot{justify-self:center}
-  .dome-stage{max-width:300px}
-  .stage .obj{width:100%;margin-left:0}
 }
 @media (max-width:520px){
   .pill .num{display:none}
   .actions .btn{width:100%}
 }
 @keyframes rise{from{transform:translateY(14px)}to{transform:none}}
-.hero .stage .obj{animation:rise 1.1s cubic-bezier(.16,1,.3,1) both}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
  .addr-row{display:flex;gap:8px}
 .addr-row input{flex:1;min-width:0}
@@ -478,6 +421,136 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 .map-wrap{display:grid;gap:8px}
 #map{height:300px;border-radius:18px;border:1px solid var(--line);background:#0d1a12;overflow:hidden;z-index:0}
 .map-note{font-size:14px;color:var(--ink-2)}
+
+/* ================= Строгий тёмный стиль (утверждён владельцем 2026-11-09) ================= */
+:root{
+  --bg:#0A0C0A; --bg-2:#111411; --card:#121512; --card-2:#151915; --line:rgba(255,255,255,.08);
+  --ink:#F4F6F1; --ink-2:#A9B0A5; --mint:#8BE22B; --green:#8BE22B; --green-ink:#0B1F06; --yellow:#FFD21F; --steel:#2A302A;
+  --display:"Unbounded","Golos Text",system-ui,sans-serif;
+}
+html{scrollbar-color:var(--steel) var(--bg)}
+::selection{background:var(--green);color:var(--green-ink)}
+.nav{background:rgba(10,12,10,.82);border-bottom-color:var(--line)}
+.logo{font:700 20px/1 var(--display)}
+.logo span{white-space:nowrap}
+@media (max-width:520px){.logo{font-size:17px}}
+.pill{min-height:44px;border-color:rgba(244,246,241,.18)}
+.pill:hover{background:rgba(255,255,255,.05);border-color:var(--ink)}
+
+/* Светоотражающая лента — единственный разделитель */
+.tape{height:14px;background:
+  linear-gradient(180deg,var(--green) 0 3px,transparent 3px calc(100% - 3px),var(--green) calc(100% - 3px)),
+  linear-gradient(90deg,#9EA39A,#E9ECE6 30%,#A7ACA3 46%,#F4F6F2 62%,#9EA39A)}
+
+/* Заголовки: крупно, заглавными, одним цветом */
+h1,h2,h3{font-family:var(--display)}
+.hero h1{font-size:clamp(34px,4.6vw,68px);line-height:1;letter-spacing:-.04em;text-transform:uppercase}
+.hero h1 em{color:inherit}
+.hero h1 span{margin-top:18px;font:500 clamp(17px,1.6vw,21px)/1.3 var(--body);letter-spacing:0;text-transform:none}
+.sec-head h2,.go-head h2{font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.08;letter-spacing:-.035em;text-transform:uppercase}
+.sec-head h2 span,.go-head h2 span{color:inherit}
+.checks h3{font:600 17px/1.3 var(--body)}
+
+/* Без свечения */
+.hero,.motto{background:none}
+.motto{border:0}
+.mascot::before,.road::after{display:none}
+.motto p{font-weight:700;font-size:clamp(26px,4.4vw,56px);letter-spacing:-.04em}
+.motto p em{color:var(--yellow)}
+.trust i{width:12px;height:4px;border-radius:1px;background:var(--yellow);box-shadow:none}
+.ic{background:rgba(255,210,31,.08);color:var(--yellow)}
+
+/* Кнопки: плоский зелёный, нажатие ощущается */
+.btn{transition:transform .16s cubic-bezier(.23,1,.32,1),background-color .2s,border-color .2s}
+.btn:active{transform:scale(.97)}
+.btn-main{background:var(--green);color:var(--green-ink);box-shadow:none}
+.btn-main:hover{background:#9BEC42;box-shadow:none;transform:none}
+.btn-main:active{transform:scale(.97)}
+.btn-soft{background:transparent;border-color:rgba(244,246,241,.22)}
+.btn-soft:hover{background:transparent;border-color:var(--ink)}
+
+/* Контейнеры в одну линию, в настоящем масштабе */
+.lineup{display:grid;grid-template-columns:3.6fr 6fr 6fr;column-gap:clamp(16px,2.4vw,36px);margin-top:40px}
+.unit{display:grid;grid-template-rows:subgrid;grid-row:span 8}
+.unit figure{margin:0;align-self:end}
+.unit img{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 16px rgba(0,0,0,.55))}
+.ground{height:2px;margin-top:-2px;background:var(--steel)}
+.vnum{display:flex;align-items:baseline;gap:6px;margin-top:22px;font:800 clamp(56px,7vw,112px)/.82 var(--display);letter-spacing:-.05em;
+  -webkit-mask:linear-gradient(180deg,#000 0 44%,transparent 44% 49%,#000 49%);mask:linear-gradient(180deg,#000 0 44%,transparent 44% 49%,#000 49%)}
+.vnum small{font:600 .26em/1 var(--body);letter-spacing:0}
+.unit h3{margin-top:14px;font:600 18px/1.2 var(--body)}
+.unit p{margin-top:6px;font-size:15px;color:var(--ink-2)}
+.unit .dims{margin-top:8px;font-size:13px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:4px;background:var(--yellow);color:#111;font:600 12px/1.5 var(--body);letter-spacing:0;vertical-align:2px}
+.unit .btn{align-self:end;margin-top:18px;min-height:48px;width:100%}
+.hauler::before{display:none}
+.hauler img{animation:none}
+
+/* Заявка */
+.panel{border-radius:20px;background:var(--card)}
+.caller img{animation:none;filter:drop-shadow(0 16px 20px rgba(0,0,0,.5))}
+.call-bubble{color:#0E120D;box-shadow:0 12px 24px rgba(0,0,0,.4)}
+.opts label{min-height:44px;display:inline-flex;align-items:center;background:transparent;border-color:rgba(244,246,241,.14)}
+.opts label:hover{border-color:rgba(244,246,241,.4)}
+.opts input:checked+label,.mode input:checked+label{color:var(--green-ink)}
+.qty{background:transparent;border-color:rgba(244,246,241,.14)}
+.qty button:hover:not(:disabled){background:rgba(255,255,255,.06)}
+.qty button:disabled{color:rgba(244,246,241,.2)}
+.area-row output{color:var(--ink)}
+input[type=range]{height:8px;background:linear-gradient(90deg,var(--green) var(--p,13%),rgba(244,246,241,.12) var(--p,13%))}
+input[type=range]::-webkit-slider-thumb{width:30px;height:30px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px}
+input[type=text],input[type=time],.mode{background:rgba(0,0,0,.35)}
+input[type=text]::placeholder{color:#7D857A}
+.geo{min-height:44px;background:transparent;border-color:rgba(244,246,241,.14);text-align:left}
+.geo:hover{background:transparent;border-color:rgba(244,246,241,.4)}
+/* сообщение — как чек: без вложенной карточки */
+.msg{background:none;border:0;border-block:1px dashed rgba(244,246,241,.16);border-radius:0;padding:14px 0;color:var(--ink);font-variant-numeric:tabular-nums}
+.note{color:var(--ink-2)}
+#map{background:var(--bg-2)}
+@media (min-width:901px){.result{position:sticky;top:96px;align-self:start}}
+
+/* Частые вопросы: заголовок слева, ответы справа */
+.faq details{border-radius:14px;background:var(--card)}
+.faq details[open]{border-color:rgba(244,246,241,.22)}
+.faq summary::after{background:rgba(255,255,255,.06);color:var(--ink)}
+@media (min-width:901px){#faq .wrap{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:48px;align-items:start}#faq .faq{margin-top:0;max-width:none}}
+
+/* Финал: енот рядом */
+@media (min-width:901px){.final .wrap{grid-template-columns:minmax(0,1fr) auto}}
+.final img.enot{width:clamp(180px,24vw,300px);height:auto;filter:drop-shadow(0 20px 24px rgba(0,0,0,.6))}
+.phone{color:var(--ink);padding-block:4px;white-space:nowrap}
+@media (max-width:900px){.phone{font-size:min(8.2vw,52px)}}
+.copy{min-height:44px;padding:0 18px;border-color:rgba(244,246,241,.18)}
+.copy:hover{border-color:var(--ink)}
+@media (max-width:900px){.final img.enot{width:min(60%,240px)}}
+
+/* Самосвал: лента вместо свечения, мотор успокаивается */
+.road-tape{position:absolute;left:0;right:0;bottom:34%;z-index:0}
+/* дорога по высоте машины, чтобы самосвал не наезжал на кнопки */
+.road{height:calc(min(76vw,720px) * .64 + 36px)}
+@media (max-width:620px){.road{height:calc(94vw * .64 + 30px)}}
+.road.idle .truck img{animation:idle .12s linear 24 alternate}
+.road.idle .dust i:nth-child(6){animation:puff 1.6s ease-out 2}
+.speed i{background:linear-gradient(90deg,rgba(244,246,241,.5),transparent)}
+
+/* Подвал и панель */
+.cities summary{padding-block:12px}
+.dock nav{background:rgba(17,20,17,.9)}
+.dock a:first-child{background:var(--green);color:var(--green-ink)}
+.dock a:active{transform:scale(.97)}
+
+@media (max-width:900px){
+  .hero h1{font-size:min(8.4vw,44px)}
+  .lineup{grid-template-columns:1fr;margin-top:24px}
+  .unit{grid-template-columns:42% 1fr;grid-template-rows:none;grid-row:auto;column-gap:16px;align-items:center;padding-block:22px;border-top:1px solid var(--line)}
+  .unit figure{grid-row:1/span 6}
+  .unit[data-v="8"] figure img{width:66%;margin-left:auto}
+  .ground,.unit>p:not(.dims){display:none}
+  .vnum{margin-top:0;font-size:56px}
+  .unit h3{margin-top:6px;font-size:16px}
+  .unit .btn{margin-top:12px;min-height:44px}
+}
 </style>
 </head>
 <body>
@@ -485,7 +558,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
 <header class="nav">
   <div class="wrap">
-    <a class="logo" href="#top"><img src="logo-enot.webp" alt=""><span>Енот <b>Заберёт</b></span></a>
+    <a class="logo" href="#top"><img src="logo-enot.webp" alt="" width="263" height="300"><span>Енот <b>Заберёт</b></span></a>
     <nav class="menu" aria-label="Разделы">
       <a href="#containers">Контейнеры</a><a href="#order">Заявка</a><a href="#contacts">Контакты</a>
     </nav>
@@ -505,16 +578,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         </div>
         <div class="trust"><span><i></i>8, 20 и 27 м³</span><span><i></i>Цена фиксирована</span><span><i></i>Подача в оговорённое время</span></div>
       </div>
-      <div class="mascot"><img src="enot3d.webp" alt="Енот Заберёт в кепке, очках и сигнальном жилете показывает большой палец" width="829" height="1417"></div>
+      <div class="mascot"><img src="enot3d.webp" fetchpriority="high" alt="Енот Заберёт в кепке, очках и сигнальном жилете показывает большой палец" width="761" height="1300"></div>
     </div>
   </section>
 
+  <div class="tape" role="presentation"></div>
   <section class="motto">
     <div class="wrap">
       <p>Москва строит. Область ремонтирует. <em>Енот заберёт!</em></p>
       <small>Работаем по Москве и Московской области.</small>
     </div>
   </section>
+  <div class="tape" role="presentation"></div>
 
   <section class="sec">
     <div class="wrap promise">
@@ -536,24 +611,32 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <div class="sec-head"><h2>Контейнеры <span>под любой объём</span></h2><p>Позвоните или напишите, и мы сразу назовём цену. Габариты примерные.</p></div>
         <div class="hauler" aria-hidden="true"><img src="enot-bag.webp" alt="" width="748" height="1100" loading="lazy"></div>
       </div>
-      <div class="cards">
-        <article class="card">
-          <div class="pic"><img src="zbox8.webp" alt="Контейнер 8 м³ для вывоза строительного мусора" loading="lazy"></div>
-          <div class="vol"><b>8 м³</b><span>Компактный</span></div>
-          <div><p>Ремонт квартиры или санузла, демонтаж пары перегородок.</p><p class="dims">≈ 3,6 × 2,0 × 1,1 м</p></div>
+      <div class="lineup">
+        <article class="unit" data-v="8">
+          <figure><img src="zbox8.webp" alt="Контейнер 8 м³ для вывоза строительного мусора" width="1000" height="506" loading="lazy"></figure>
+          <div class="ground" aria-hidden="true"></div>
+          <div class="vnum">8<small>м³</small></div>
+          <h3>Компактный</h3>
+          <p>Ремонт квартиры или санузла, демонтаж пары перегородок.</p>
+          <p class="dims">≈ 3,6 × 2,0 × 1,1 м</p>
           <a class="btn btn-soft" href="tel:+79671550303">Узнать цену</a>
         </article>
-        <article class="card pop">
-          <span class="badge">Берут чаще</span>
-          <div class="pic"><img src="zbox20.webp" alt="Контейнер 20 м³ для вывоза строительного мусора" loading="lazy"></div>
-          <div class="vol"><b>20 м³</b><span>Средний</span></div>
-          <div><p>Капремонт дома или офиса, демонтаж под чистовую отделку.</p><p class="dims">≈ 6,0 × 2,3 × 1,5 м</p></div>
+        <article class="unit" data-v="20">
+          <figure><img src="zbox20.webp" alt="Контейнер 20 м³ для вывоза строительного мусора" width="1000" height="555" loading="lazy"></figure>
+          <div class="ground" aria-hidden="true"></div>
+          <div class="vnum">20<small>м³</small></div>
+          <h3>Средний <span class="badge">Берут чаще</span></h3>
+          <p>Капремонт дома или офиса, демонтаж под чистовую отделку.</p>
+          <p class="dims">≈ 6,0 × 2,3 × 1,5 м</p>
           <a class="btn btn-main" href="tel:+79671550303">Узнать цену</a>
         </article>
-        <article class="card">
-          <div class="pic"><img src="zbox27.webp" alt="Контейнер 27 м³ для вывоза строительного мусора" loading="lazy"></div>
-          <div class="vol"><b>27 м³</b><span>Большой</span></div>
-          <div><p>Снос постройки, крупный объект, расчистка участка.</p><p class="dims">≈ 6,0 × 2,4 × 1,9 м</p></div>
+        <article class="unit" data-v="27">
+          <figure><img src="zbox27.webp" alt="Контейнер 27 м³ для вывоза строительного мусора" width="1000" height="510" loading="lazy"></figure>
+          <div class="ground" aria-hidden="true"></div>
+          <div class="vnum">27<small>м³</small></div>
+          <h3>Большой</h3>
+          <p>Снос постройки, крупный объект, расчистка участка.</p>
+          <p class="dims">≈ 6,0 × 2,4 × 1,9 м</p>
           <a class="btn btn-soft" href="tel:+79671550303">Узнать цену</a>
         </article>
       </div>
@@ -563,7 +646,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <section class="sec" id="order" style="padding-top:0">
     <div class="wrap">
       <div class="order-head">
-        <div class="sec-head"><h2>Заявка <span>за минуту</span></h2><p>Ответьте на три вопроса. Мы подберём контейнер и подготовим сообщение, вам останется его отправить.</p></div>
+        <div class="sec-head"><h2>Заявка <span>за минуту</span></h2><p>Выберите контейнер, время и адрес. Мы подготовим сообщение, вам останется его отправить.</p></div>
         <div class="caller" aria-hidden="true"><span class="call-bubble">Откуда забрать мусор?</span><img src="enot-phone.webp" alt="" width="800" height="871" loading="lazy"></div>
       </div>
       <div class="order">
@@ -642,7 +725,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           </div>
         </form>
         <aside class="panel result" aria-live="polite">
-          <div class="rec"><img id="recImg" src="zbox8.webp" alt=""><div><small>Вам подойдёт</small><b id="resVol">8 м³</b><small id="resWhy">Примерно 7 м³ мусора</small></div></div>
+          <div class="rec"><img id="recImg" src="zbox8.webp" alt="" width="1000" height="506"><div><small>Вам подойдёт</small><b id="resVol">8 м³</b><small id="resWhy">Примерно 7 м³ мусора</small></div></div>
           <div class="msg" id="msg"></div>
           <a class="btn btn-main" id="waBtn" href="https://wa.me/79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.6z"/><path d="M9 9.5c.3 2 2.5 4.2 4.5 4.5l1-1.2 2 .8c-.2 1.4-1.3 2-2.5 1.8A7 7 0 0 1 8.4 10c-.2-1.2.4-2.3 1.8-2.5l.8 2z"/></svg>Отправить в WhatsApp</a>
           <button class="btn btn-soft" type="button" id="copyMsg">Скопировать для Макса</button>
@@ -657,7 +740,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="sec-head"><h2>Частые <span>вопросы</span></h2></div>
       <div class="faq">
         <details><summary>Сколько стоит вывоз строительного мусора?</summary><p>Цена зависит от объёма контейнера, адреса и времени подачи. Позвоните или напишите в WhatsApp — назовём стоимость сразу. Цену согласуем до выезда, и на месте она не меняется.</p></details>
-        <details><summary>Какой контейнер выбрать?</summary><p>8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — ответьте на три вопроса в форме «Заявка за минуту», и мы подберём объём.</p></details>
+        <details><summary>Какой контейнер выбрать?</summary><p>8 м³ — для ремонта квартиры или санузла. 20 м³ — для капремонта дома или офиса. 27 м³ — для сноса постройки, крупного объекта или расчистки участка. Не уверены — нажмите «Подберите мне» в форме «Заявка за минуту», и мы подберём объём.</p></details>
         <details><summary>Как быстро вы подадите контейнер?</summary><p>Можем подать в день обращения, если есть свободная машина. Время подачи согласуем заранее и приезжаем к нему.</p></details>
         <details><summary>Сколько контейнер может стоять на объекте?</summary><p>Срок обсуждаем при заказе — под ваш график работ.</p></details>
         <details><summary>Есть ли грузчики?</summary><p>Да, можем помочь с погрузкой мусора за доплату. Скажите об этом при заказе.</p></details>
@@ -677,10 +760,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <button class="copy" id="copyPhone" type="button">Скопировать номер</button>
         <div class="actions">
           <a class="btn btn-main" href="tel:+79671550303">Позвонить</a>
-          <a class="btn btn-soft" href="https://wa.me/79671550303">WhatsApp</a>
-          <a class="btn btn-soft" href="https://max.ru/">Макс</a>
+          <a class="btn btn-soft js-wa" href="https://wa.me/79671550303">WhatsApp</a>
+          <a class="btn btn-soft js-max" href="https://max.ru/">Макс</a>
         </div>
       </div>
+      <img class="enot" src="enot.webp" alt="" width="700" height="700" loading="lazy">
     </div>
   </section>
 </main>
@@ -689,8 +773,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="wrap go-head">
     <h2 id="goTitle">Енот уже <span>выезжает</span></h2>
     <p>Позвоните, и самосвал с контейнером отправится к вашему объекту.</p>
+    <div class="actions go-actions">
+      <a class="btn btn-main" href="tel:+79671550303">Позвонить</a>
+      <a class="btn btn-soft js-wa" href="https://wa.me/79671550303">WhatsApp</a>
+    </div>
   </div>
   <div class="road" id="road">
+    <div class="tape road-tape" role="presentation"></div>
     <div class="lane" aria-hidden="true"></div>
     <div class="truck" id="truck">
       <div class="speed" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -708,10 +797,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <div class="dock">
   <nav aria-label="Связаться">
     <a href="tel:+79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Позвонить</a>
-    <a href="https://wa.me/79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.6z"/><path d="M9 9.5c.3 2 2.5 4.2 4.5 4.5l1-1.2 2 .8c-.2 1.4-1.3 2-2.5 1.8A7 7 0 0 1 8.4 10c-.2-1.2.4-2.3 1.8-2.5l.8 2z"/></svg>WhatsApp</a>
-    <a href="https://max.ru/"><span class="max-ico">M</span>Макс</a>
+    <a class="js-wa" href="https://wa.me/79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.6z"/><path d="M9 9.5c.3 2 2.5 4.2 4.5 4.5l1-1.2 2 .8c-.2 1.4-1.3 2-2.5 1.8A7 7 0 0 1 8.4 10c-.2-1.2.4-2.3 1.8-2.5l.8 2z"/></svg>WhatsApp</a>
+    <a class="js-max" href="https://max.ru/"><span class="max-ico">M</span>Макс</a>
   </nav>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
 (function(){
@@ -741,16 +831,29 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     var tm=val('time').value,ex=document.getElementById('exactTime');ex.hidden=tm!=='exact';
     var when=val('when').value+', '+(tm==='exact'?'к '+(ex.value||'10:00'):tm);
     var t='Здравствуйте! '+head+'\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
-    msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);return t;
+    msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);
+    /* после того как клиент тронул форму, все кнопки WhatsApp несут готовую заявку */
+    if(touched)document.querySelectorAll('.js-wa').forEach(function(a){a.href=wa.href});
+    return t;
   }
+  var touched=false;
   function setQty(d){qtyOut.value=Math.min(QMAX,Math.max(1,(+qtyOut.value||1)+d));build()}
   qMinus.addEventListener('click',function(){setQty(-1)});qPlus.addEventListener('click',function(){setQty(1)});
-  var f=document.getElementById('orderForm');f.addEventListener('input',build);f.addEventListener('submit',function(e){e.preventDefault()});build();
+  var f=document.getElementById('orderForm');f.addEventListener('input',function(){touched=true;build()});
+  qMinus.addEventListener('click',function(){touched=true;build()});qPlus.addEventListener('click',function(){touched=true;build()});f.addEventListener('submit',function(e){e.preventDefault()});build();
   function copy(str,el,done){
     function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);done(false)}
     try{navigator.clipboard.writeText(str).then(function(){done(true)},sel)}catch(e){sel()}
   }
   document.getElementById('copyMsg').addEventListener('click',function(){copy(build(),msg,function(ok){note.textContent=ok?'Скопировано. Откройте Макс и вставьте в чат с номером 8 967 155-03-03.':'Текст выделен, скопируйте его.'})});
+  /* Макс: прямой ссылки на чат по номеру нет, поэтому копируем заявку или номер и подсказываем, что делать */
+  var toast=document.getElementById('toast'),tt;
+  function say(s){toast.textContent=s;toast.hidden=false;requestAnimationFrame(function(){toast.classList.add('on')});clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('on');setTimeout(function(){toast.hidden=true},250)},5200)}
+  document.querySelectorAll('.js-max').forEach(function(a){a.addEventListener('click',function(e){
+    e.preventDefault();
+    if(touched)copy(build(),msg,function(ok){say(ok?'Заявка скопирована. Откройте Макс, найдите номер 8 967 155-03-03 и вставьте текст в чат.':'Скопируйте текст заявки и отправьте в Макс на номер 8 967 155-03-03.')});
+    else copy('+79671550303',document.getElementById('phone'),function(ok){say(ok?'Номер скопирован. Откройте Макс и найдите нас по номеру 8 967 155-03-03.':'Наш номер в Максе: 8 967 155-03-03.')});
+  })});
   document.getElementById('copyPhone').addEventListener('click',function(){var b=this;copy('+79671550303',document.getElementById('phone'),function(ok){b.textContent=ok?'Скопировано':'Номер выделен';setTimeout(function(){b.textContent='Скопировать номер'},2200)})});
 })();
 

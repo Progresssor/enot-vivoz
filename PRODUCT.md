@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-delegated: static HTML/CSS/JS in one page (index.html + assets), deployed on Vercel. Chosen because the owner is a first-time builder and the site is a single landing page.
+delegated: static HTML/CSS/JS in one page (index.html + assets), hosted on GitHub Pages at enot-zaberet.ru. Chosen because the owner is a first-time builder and the site is a single landing page.
 
 ## Users
 
@@ -36,7 +36,7 @@ Order flow: call or message → choose container and agree price → container d
 - Containers: 8, 20, 27 m³.
 - Prices are NOT shown on the site by owner's decision; copy says "call or write, we name the price right away".
 - Phone: 8 967 155-03-03 (also WhatsApp and Max). Telegram is not used.
-- Company name is undecided; placeholder "ЕНОТ ВЫВОЗ" until the owner chooses.
+- Company name: «Енот Заберёт».
 
 ## Brand Commitments
 

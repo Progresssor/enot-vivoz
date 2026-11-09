@@ -724,6 +724,7 @@ input[type=text]::placeholder{color:#7D857A}
           <div class="send-row">
             <a class="btn btn-main" id="sendLead" href="https://wa.me/79671550303" target="_blank" rel="noopener">Отправить в WhatsApp</a>
             <button class="btn btn-soft" type="button" id="sendMax">Отправить в Макс</button>
+            <button class="btn btn-soft" type="button" id="sendCallback">Жду звонка</button>
           </div>
           <span class="note" id="note" role="status"></span>
         </aside>
@@ -867,6 +868,21 @@ input[type=text]::placeholder{color:#7D857A}
     try{navigator.clipboard.writeText(str).then(function(){done(true)},sel)}catch(e){sel()}
   }
   var MAX='https://max.ru/u/f9LHodD0cOIIyNcLL1zsY65Dy1cV-UTYv-aOzZGS6MM0UVkWclUvTMSlZwI';
+  /* Заявка в сервис заявок: уходит при любом нажатии кнопки, телефон не нужен */
+  var LEAD_URL='https://zayavki.enot-zaberet.ru/api/lead';
+  function toService(channel){
+    var a=addr.value.trim();if(a.length<5)return Promise.resolve(false);
+    var body=new URLSearchParams({container:val('size').value,address:a,comment:'Кнопка: '+channel});
+    if(window.geoPt)body.set('comment','Кнопка: '+channel+'. Точка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map');
+    return fetch(LEAD_URL,{method:'POST',body:body,keepalive:true}).then(function(r){return r.ok},function(){return false});
+  }
+  send.addEventListener('click',function(){toService('WhatsApp')});
+  document.getElementById('sendMax').addEventListener('click',function(){toService('Макс')});
+  document.getElementById('sendCallback').addEventListener('click',function(){
+    if(addr.value.trim().length<5){note.textContent='Укажите адрес объекта.';addr.focus();return}
+    note.textContent='Отправляем…';
+    toService('Жду звонка').then(function(ok){note.textContent=ok?'Заявка принята. Перезвоним вам.':'Не получилось отправить. Напишите нам в WhatsApp — кнопка выше.'});
+  });
   /* Скопировать для Макса: копируем заявку и сразу открываем наш чат в Максе */
   document.getElementById('sendMax').addEventListener('click',function(){copy(build(),msg,function(ok){note.textContent=ok?'Заявка скопирована. В открывшемся чате Макса вставьте её и отправьте.':'Текст выделен, скопируйте его и отправьте в Макс.'});window.open(MAX,'_blank','noopener')});
   /* Макс: кнопки открывают наш чат; если форма заполнялась, заявка заодно копируется, чтобы её вставить */

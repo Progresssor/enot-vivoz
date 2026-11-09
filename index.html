@@ -870,9 +870,13 @@ input[type=text]::placeholder{color:#7D857A}
   var MAX='https://max.ru/u/f9LHodD0cOIIyNcLL1zsY65Dy1cV-UTYv-aOzZGS6MM0UVkWclUvTMSlZwI';
   /* Заявка в сервис заявок: уходит при любом нажатии кнопки, телефон не нужен */
   var LEAD_URL='https://zayavki.enot-zaberet.ru/api/lead';
+  /* Метка Директа: yclid из адреса объявления, храним 30 дней, уходит в заявку */
+  var ymClick=/[?&]yclid=(\d+)/.exec(location.search);if(ymClick)document.cookie='yclid='+ymClick[1]+'; Max-Age=2592000; Path=/; SameSite=Lax';
+  function yclidCookie(){var r=document.cookie.match('(?:^|; )yclid=([^;]*)');return r?r[1]:''}
   function toService(channel){
     var a=addr.value.trim();if(a.length<5)return Promise.resolve(false);
     var body=new URLSearchParams({container:val('size').value,address:a,comment:'Кнопка: '+channel});
+    if(yclidCookie())body.set('yclid',yclidCookie());
     if(window.geoPt)body.set('comment','Кнопка: '+channel+'. Точка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map');
     return fetch(LEAD_URL,{method:'POST',body:body,keepalive:true}).then(function(r){return r.ok},function(){return false});
   }

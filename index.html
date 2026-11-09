@@ -595,6 +595,8 @@ input[type=text]::placeholder{color:#7D857A}
 .go-head p{margin-left:0}
 .go-actions{justify-content:flex-start}
 @media (max-width:900px){.hero h1{font-size:min(8vw,44px)}}
+.send-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.send-row .btn{flex:1 1 180px;text-align:center}
 </style>
 </head>
 <body>
@@ -692,71 +694,16 @@ input[type=text]::placeholder{color:#7D857A}
       <div class="order">
         <form class="panel" id="orderForm" novalidate>
           <div class="field">
-            <div class="mode" role="radiogroup" aria-label="Как выбрать контейнер">
-              <input type="radio" name="mode" id="m1" value="know" checked><label for="m1">Знаю объём</label>
-              <input type="radio" name="mode" id="m2" value="pick"><label for="m2">Подберите мне</label>
-            </div>
-          </div>
-          <div class="field" id="modeKnow">
             <span>Контейнер</span>
-            <div class="size-row">
-              <div class="opts">
-                <input type="radio" name="size" id="s8" value="8"><label for="s8">8 м³</label>
-                <input type="radio" name="size" id="s20" value="20" checked><label for="s20">20 м³</label>
-                <input type="radio" name="size" id="s27" value="27"><label for="s27">27 м³</label>
-              </div>
-              <div class="qty" role="group" aria-label="Количество контейнеров">
-                <button type="button" id="qtyMinus" aria-label="Меньше">−</button>
-                <output id="qty" aria-live="polite">1</output>
-                <button type="button" id="qtyPlus" aria-label="Больше">+</button>
-                <span class="qty-unit">шт.</span>
-              </div>
-            </div>
-          </div>
-          <div id="modePick" hidden>
-          <div class="field">
-            <span>Что делаете на объекте</span>
             <div class="opts">
-              <input type="radio" name="work" id="w1" value="ремонт" data-k="0.12" checked><label for="w1">Ремонт</label>
-              <input type="radio" name="work" id="w2" value="капремонт" data-k="0.25"><label for="w2">Капремонт</label>
-              <input type="radio" name="work" id="w3" value="демонтаж или снос" data-k="0.5"><label for="w3">Демонтаж или снос</label>
-              <input type="radio" name="work" id="w4" value="расчистка участка" data-k="0.06"><label for="w4">Расчистка участка</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="area-row"><label class="lbl" for="area">Площадь объекта</label><output id="areaOut" for="area">60 м²</output></div>
-            <input type="range" id="area" min="10" max="400" step="5" value="60">
-          </div>
-          </div>
-          <div class="field">
-            <span>Когда подать контейнер</span>
-            <div class="opts">
-              <input type="radio" name="when" id="d1" value="сегодня" checked><label for="d1">Сегодня</label>
-              <input type="radio" name="when" id="d2" value="завтра"><label for="d2">Завтра</label>
-              <input type="radio" name="when" id="d3" value="на этой неделе"><label for="d3">На этой неделе</label>
-            </div>
-          </div>
-          <div class="field">
-            <span>Во сколько</span>
-            <div class="opts">
-              <input type="radio" name="time" id="t0" value="в любое время" checked><label for="t0">В любое время</label>
-              <input type="radio" name="time" id="t1" value="утром (8:00–12:00)"><label for="t1">Утром 8–12</label>
-              <input type="radio" name="time" id="t2" value="днём (12:00–16:00)"><label for="t2">Днём 12–16</label>
-              <input type="radio" name="time" id="t3" value="вечером (16:00–20:00)"><label for="t3">Вечером 16–20</label>
-              <input type="radio" name="time" id="t4" value="exact"><label for="t4">Точное время</label>
-            </div>
-            <input type="time" id="exactTime" value="10:00" aria-label="Точное время подачи" hidden>
-          </div>
-          <div class="field">
-            <span>Дополнительно</span>
-            <div class="opts">
-              <input type="checkbox" id="x1" name="extra" value="loaders"><label for="x1">Нужны грузчики</label>
-              <input type="checkbox" id="x2" name="extra" value="company"><label for="x2">Для компании (договор, безнал)</label>
+              <input type="radio" name="size" id="s8" value="8"><label for="s8">8 м³</label>
+              <input type="radio" name="size" id="s20" value="20" checked><label for="s20">20 м³</label>
+              <input type="radio" name="size" id="s27" value="27"><label for="s27">27 м³</label>
             </div>
           </div>
           <div class="field">
             <label for="addr">Адрес объекта</label>
-            <p style="color:var(--ink-2);font-size:15px;margin-top:-4px">Укажите адрес объекта — уточним возможность, стоимость и время вывоза в вашем районе.</p>
+            <p style="color:var(--ink-2);font-size:15px;margin-top:-4px">Уточним стоимость и время вывоза в вашем районе.</p>
             <div class="addr-row">
               <input type="text" id="addr" placeholder="Например: Химки, ул. Ленина, 10" autocomplete="street-address">
               <button class="btn btn-soft addr-find" type="button" id="findBtn">Найти</button>
@@ -774,8 +721,10 @@ input[type=text]::placeholder{color:#7D857A}
         <aside class="panel result" aria-live="polite">
           <div class="rec"><img id="recImg" src="zbox8.webp" alt="" width="1000" height="506"><div><small>Вам подойдёт</small><b id="resVol">8 м³</b><small id="resWhy">Примерно 7 м³ мусора</small></div></div>
           <div class="msg" id="msg"></div>
-          <a class="btn btn-main" id="waBtn" href="https://wa.me/79671550303"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.6z"/><path d="M9 9.5c.3 2 2.5 4.2 4.5 4.5l1-1.2 2 .8c-.2 1.4-1.3 2-2.5 1.8A7 7 0 0 1 8.4 10c-.2-1.2.4-2.3 1.8-2.5l.8 2z"/></svg>Отправить в WhatsApp</a>
-          <button class="btn btn-soft" type="button" id="copyMsg">Скопировать для Макса</button>
+          <div class="send-row">
+            <a class="btn btn-main" id="sendLead" href="https://wa.me/79671550303" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+            <button class="btn btn-soft" type="button" id="sendMax">Отправить в Макс</button>
+          </div>
           <span class="note" id="note" role="status"></span>
         </aside>
       </div>
@@ -893,53 +842,37 @@ input[type=text]::placeholder{color:#7D857A}
   addEventListener('resize',upd);upd();
 })();
 (function(){
-  var area=document.getElementById('area'),out=document.getElementById('areaOut'),addr=document.getElementById('addr');
-  var resVol=document.getElementById('resVol'),resWhy=document.getElementById('resWhy'),recImg=document.getElementById('recImg'),msg=document.getElementById('msg'),wa=document.getElementById('waBtn'),note=document.getElementById('note');
+  var addr=document.getElementById('addr');
+  var resVol=document.getElementById('resVol'),resWhy=document.getElementById('resWhy'),recImg=document.getElementById('recImg'),msg=document.getElementById('msg'),wa=document.getElementById('sendLead'),note=document.getElementById('note'),send=wa;
+  var f=document.getElementById('orderForm');
   function val(n){return document.querySelector('input[name='+n+']:checked')}
-  var qtyOut=document.getElementById('qty'),qMinus=document.getElementById('qtyMinus'),qPlus=document.getElementById('qtyPlus'),QMAX=10;
-  /* 1 контейнер, 2 контейнера, 5 контейнеров */
-  function plural(n,one,few,many){var a=n%10,b=n%100;return a===1&&b!==11?one:a>=2&&a<=4&&(b<12||b>14)?few:many}
+  var touched=false;
+  /* Сообщение для WhatsApp: номер клиента WhatsApp передаёт сам, телефон в форме не нужен */
   function build(){
-    var know=val('mode').value==='know',v,head,why,qty=+qtyOut.value||1,a=+area.value;
-    document.getElementById('modeKnow').hidden=!know;document.getElementById('modePick').hidden=know;
-    out.textContent=a+' м²';area.style.setProperty('--p',((a-10)/390*100)+'%');
-    if(know){
-      v=+val('size').value;qMinus.disabled=qty<=1;qPlus.disabled=qty>=QMAX;
-      resVol.textContent=(qty>1?qty+' × ':'')+v+' м³';
-      resWhy.textContent=qty>1?qty+' '+plural(qty,'контейнер','контейнера','контейнеров')+' по '+v+' м³':'Один контейнер';
-      head=qty>1?'Нужно '+qty+' '+plural(qty,'контейнер','контейнера','контейнеров')+' по '+v+' м³.':'Нужен контейнер '+v+' м³.';
-    }else{
-      var w=val('work'),m=Math.max(1,Math.round(a*(+w.dataset.k))),trips=m>27?Math.ceil(m/27):1;
-      v=m<=8?8:m<=20?20:27;
-      resVol.textContent=(trips>1?trips+' × ':'')+v+' м³';
-      resWhy.textContent='Примерно '+m+' м³ мусора'+(trips>1?', несколько рейсов':'');
-      head='Нужен контейнер '+v+' м³'+(trips>1?' ('+trips+' '+plural(trips,'рейс','рейса','рейсов')+')':'')+'.\nРаботы: '+w.value+', около '+a+' м².';
-    }
+    var v=+val('size').value,a=addr.value.trim();
+    resVol.textContent=v+' м³';resWhy.textContent='Один контейнер';
     recImg.src='zbox'+v+'.webp';
-    var tm=val('time').value,ex=document.getElementById('exactTime');ex.hidden=tm!=='exact';
-    var when=val('when').value+', '+(tm==='exact'?'к '+(ex.value||'10:00'):tm);
-    var t='Здравствуйте! '+head+'\nПодача: '+when+'.'+(addr.value.trim()?'\nАдрес: '+addr.value.trim():'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+(document.getElementById('x1').checked?'\nНужна помощь с погрузкой.':'')+(document.getElementById('x2').checked?'\nОформляем на компанию, нужен договор.':'')+'\nПодскажите цену.';
-    msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);
+    var t='Здравствуйте! Нужен контейнер '+v+' м³.'+(a?'\nАдрес: '+a:'')+(window.geoPt?'\nТочка на карте: https://yandex.ru/maps/?pt='+geoPt.lng.toFixed(6)+','+geoPt.lat.toFixed(6)+'&z=17&l=map':'')+'\nПодскажите цену.';
+    msg.textContent=t;wa.href='https://wa.me/79671550303?text='+encodeURIComponent(t);send.href=wa.href;
     /* после того как клиент тронул форму, все кнопки WhatsApp несут готовую заявку */
-    if(touched)document.querySelectorAll('.js-wa').forEach(function(a){a.href=wa.href});
+    if(touched)document.querySelectorAll('.js-wa').forEach(function(x){x.href=wa.href});
     return t;
   }
-  var touched=false;
-  function setQty(d){qtyOut.value=Math.min(QMAX,Math.max(1,(+qtyOut.value||1)+d));build()}
-  qMinus.addEventListener('click',function(){setQty(-1)});qPlus.addEventListener('click',function(){setQty(1)});
-  var f=document.getElementById('orderForm');f.addEventListener('input',function(){touched=true;build()});
-  qMinus.addEventListener('click',function(){touched=true;build()});qPlus.addEventListener('click',function(){touched=true;build()});f.addEventListener('submit',function(e){e.preventDefault()});build();
+  f.addEventListener('input',function(){touched=true;build()});
+  f.addEventListener('change',function(){build()});
+  f.addEventListener('submit',function(e){e.preventDefault()});
+  build();
   function copy(str,el,done){
     function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);done(false)}
     try{navigator.clipboard.writeText(str).then(function(){done(true)},sel)}catch(e){sel()}
   }
   var MAX='https://max.ru/u/f9LHodD0cOIIyNcLL1zsY65Dy1cV-UTYv-aOzZGS6MM0UVkWclUvTMSlZwI';
   /* Скопировать для Макса: копируем заявку и сразу открываем наш чат в Максе */
-  document.getElementById('copyMsg').addEventListener('click',function(){copy(build(),msg,function(ok){note.textContent=ok?'Заявка скопирована. В открывшемся чате Макса вставьте её и отправьте.':'Текст выделен, скопируйте его и отправьте в Макс.'});window.open(MAX,'_blank','noopener')});
+  document.getElementById('sendMax').addEventListener('click',function(){copy(build(),msg,function(ok){note.textContent=ok?'Заявка скопирована. В открывшемся чате Макса вставьте её и отправьте.':'Текст выделен, скопируйте его и отправьте в Макс.'});window.open(MAX,'_blank','noopener')});
   /* Макс: кнопки открывают наш чат; если форма заполнялась, заявка заодно копируется, чтобы её вставить */
   var toast=document.getElementById('toast'),tt;
   function say(s){toast.textContent=s;toast.hidden=false;requestAnimationFrame(function(){toast.classList.add('on')});clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('on');setTimeout(function(){toast.hidden=true},250)},5200)}
-  document.querySelectorAll('.js-max').forEach(function(a){a.addEventListener('click',function(e){
+  document.querySelectorAll('.js-max').forEach(function(a){a.addEventListener('click',function(){
     if(touched)copy(build(),msg,function(ok){if(ok)say('Заявка скопирована. Вставьте её в чат Макса и отправьте.')});
   })});
   document.getElementById('copyPhone').addEventListener('click',function(){var b=this;copy('+79671550303',document.getElementById('phone'),function(ok){b.textContent=ok?'Скопировано':'Номер выделен';setTimeout(function(){b.textContent='Скопировать номер'},2200)})});
